@@ -1,0 +1,151 @@
+<li><a class=" " href="/stock-screener/">Stock Screener</a></li>
+<li><a class=" " href="/equities/trending-stocks">Trending Stocks</a></li>
+<li><a class=" " href="/equities/united-states">United States</a></li>
+<li><a class=" " href="/equities/pre-market">Pre-Market</a></li>
+<li><a class=" " href="/earnings-calendar/">Earnings Calendar</a></li>
+<li><a class=" " href="/equities/americas">Americas</a></li>
+<li><a class=" " href="/equities/europe">Europe</a></li>
+<li><a class=" " href="/equities/52-week-high">52 Week High</a></li>
+<li><a class=" " href="/equities/52-week-low">52 Week Low</a></li>
+<li><a class=" " href="/equities/most-active-stocks">Most Active</a></li>
+<li><a class=" " href="/equities/top-stock-gainers">Top Gainers</a></li>
+<li><a class=" " href="/equities/top-stock-losers">Top Losers</a></li>
+<li><a class=" " href="/equities/world-adrs">World ADRs</a></li>
+<li><a class=" " href="/equities/cannabis-stocks">Marijuana Stocks</a></li>
+<li><a class=" " href="/discover/bank-stocks">Top Bank Stocks</a></li> </ul>
+<a href="/commodities/">Commodities</a>
+<div class="navBarDropDown">
+<ul class="main">
+<li><a class=" " href="/commodities/real-time-futures">Real Time Commodities</a></li>
+<li><a class=" " href="/commodities/metals">Metals</a></li>
+<li><a class=" " href="/commodities/energy">Energy</a></li>
+<li><a class=" " href="/commodities/grains">Grains</a></li>
+<li><a class=" " href="/commodities/softs">Softs</a></li>
+<li><a class=" " href="/commodities/meats">Meats</a></li>
+<li><a class=" " href="/indices/commodities-indices">Commodity Indices</a></li> </ul>
+<ul class="popular">
+<li><a href="/commodities/gold">Gold</a></li>
+<li><a href="/commodities/crude-oil">Crude Oil WTI</a></li>
+<li><a href="/commodities/brent-oil">Brent Oil</a></li>
+<li><a href="/commodities/silver">Silver</a></li>
+ <li><a href="/commodities/natural-gas">Natural Gas</a></li>
+<li><a href="/commodities/copper">Copper</a></li>
+<li><a href="/commodities/us-wheat">US Wheat</a></li>
+</ul>
+</div> </li>
+<li class="row">
+<a href="/crypto/">Cryptocurrency</a>
+<div class="navBarDropDown">
+<ul class="main">
+<li><a class=" " href="/crypto/currencies">All Cryptocurrencies</a></li>
+<li><a class=" " href="/crypto/currency-pairs">Cryptocurrency Pairs</a></li>
+<li><a class=" " href="/crypto/ico-calendar">ICO Calendar</a></li>
+<li><a class=" " href="/crypto/bitcoin">Bitcoin</a></li>
+<li><a class=" " href="/crypto/ethereum">Ethereum</a></li>
+<li><a class=" " href="/crypto/cardano">Cardano</a></li>
+<li><a class=" " href="/crypto/solana">Solana</a></li>
+<li><a class=" " href="/crypto/dogecoin">Dogecoin</a></li>
+<li><a class=" " href="/crypto/shiba-inu">SHIBA INU</a></li>
+<li><a class=" " href="/currency-converter/?tag=Cryptocurrency">Currency Converter</a></li> </ul>
+<ul class="popular">
+<li><a href="/crypto/bitcoin/btc-usd">BTC/USD</a></li>
+<li><a href="/crypto/ethereum/eth-usd">ETH/USD</a></li>
+<li><a href="/crypto/bitcoin-cash/bch-usd">BCH/USD</a></li>
+<li><a href="/crypto/litecoin/ltc-usd">LTC/USD</a></li>
+<li><a href="/crypto/dogecoin/doge-usd">DOGE/USD</a></li>
+<li><a href="/crypto/ethereum-classic/etc-usd">ETC/USD</a></li>
+<li><a href="/crypto/ethereum/eth-btc">ETH/BTC</a></li>
+<li><a href="/crypto/xrp/xrp-usd">XRP/USD</a></li>
+<li><a href="/crypto/bitcoin/bitcoin-futures">Bitcoin Futures CME</a></li>
+</ul>
+</div> </li>
+<li class="row">
+<a href="/currencies/">Currencies</a>
+<div class="navBarDropDown">
+<ul class="main">
+<li><a class=" " href="/currencies/streaming-forex-rates-majors">Currency Rates</a></li>
+<li><a class=" " href="/currencies/single-currency-crosses">Single Currency Crosses</a></li>
+<li><a class=" " href="/currencies/live-currency-cross-rates">Live Currency Cross Rates</a></li>
+<li><a class=" " href="/currencies/exchange-rates-table">Exchange Rates Table</a></li>
+<li><a class=" " href="/rates-bonds/forward-rates">Forward Rates</a></li>
+<li><a class=" " href="/currencies/fx-futures">Currency Futures</a></li>
+<li><a class=" " href="/currencies/forex-options">Currency Options</a></li> </ul>
+<ul class="popular">
+<li><a href="/currencies/eur-usd">EUR/USD</a></li>
+<li><a href="/currencies/gbp-usd">GBP/USD</a></li>
+<li><a href="/currencies/eur-chf">EUR/CHF</a></li>
+<li><a href="/currencies/aud-usd">AUD/USD</a></li>
+<li><a href="/currencies/usd-jpy">USD/JPY</a></li>
+<li><a href="/currencies/usd-cad">USD/CAD</a></li>
+<li><a href="/currencies/usd-chf">USD/CHF</a></li>
+<li><a href="/currencies/usd-try">USD/TRY</a></li>
+<li><a href="/currencies/usd-mxn">USD/MXN</a></li>
+<li><a href="/crypto/bitcoin/btc-usd">BTC/USD</a></li>
+<li><a href="/currencies/usd-rub">USD/RUB</a></li>
+<li><a href="/currencies/us-dollar-index">Dollar Index</a></li>
+</ul>
+</div> </li>
+<li class="row">
+<a href="/etfs/">ETFs</a>
+<div class="navBarDropDown">
+<ul class="main">
+<li><a class=" " href="/etfs/world-etfs">World ETFs</a></li>
+<li><a class=" " href="/etfs/major-etfs">Major ETFs</a></li>
+<li><a class=" " href="/etfs/usa-etfs">USA ETFs</a></li>
+<li><a class=" " href="/etfs/cannabis-etfs">Marijuana ETFs</a></li> </ul>
+<ul class="popular">
+<li><a href="/etfs/spdr-s-p-500">SPDR S&P 500</a></li>
+<li><a href="/etfs/ishares-msci-emg-markets">iShares MSCI Emerging Markets</a></li>
+<li><a href="/etfs/diamonds-trust">SPDR Dow Jones Industrial Average</a></li>
+<li><a href="/etfs/powershares-qqqq">Invesco QQQ Trust</a></li>
+</ul>
+</div> </li>
+<li class="row">
+<a href="/funds/">Funds</a>
+<div class="navBarDropDown">
+<ul class="main">
+<li><a class=" " href="/funds/world-funds">World Funds</a></li>
+<li><a class=" " href="/funds/major-funds">Major Funds</a></li> </ul>
+<ul class="popular">
+<li><a href="/funds/vanguard-500-index-admiral">Vanguard 500 Index Admiral</a></li>
+<li><a href="/funds/vanguard-total-bond-market-ii-idx-i">Vanguard Total Bond Market II Index Fund Investor </a></li>
+<li><a href="/funds/american-funds-capital-income-bldr">American Funds Capital Income Builder A</a></li>
+<li><a href="/funds/pimco-commodity-real-ret-strat-inst">PIMCO Commodity Real Return Strategy Institutional</a></li>
+</ul>
+</div> </li>
+<li class="row">
+<a href="/rates-bonds/">Bonds</a>
+<div class="navBarDropDown">
+<ul class="main">
+<li><a class=" " href="/rates-bonds/usa-government-bonds">US Treasury Yield Curve</a></li>
+<li><a class=" " href="/rates-bonds/world-government-bonds">World Government Bonds</a></li>
+<li><a class=" " href="/rates-bonds/financial-futures">Financial Futures</a></li>
+<li><a class=" " href="/rates-bonds/government-bond-spreads">Government Bond Spreads</a></li>
+<li><a class=" " href="/indices/bond-indices">Bond Indices</a></li>
+<li><a class=" " href="/rates-bonds/forward-rates">Forward Rates</a></li>
+<li><a class=" " href="/rates-bonds/world-cds">World Credit Default Swap Rates (CDS)</a></li> </ul>
+<ul class="popular">
+<li><a href="/rates-bonds/u.s.-10-year-bond-yield">U.S. 10Y</a></li>
+<li><a href="/rates-bonds/u.s.-30-year-bond-yield">U.S. 30Y</a></li>
+<li><a href="/rates-bonds/u.s.-2-year-bond-yield">U.S. 2Y</a></li>
+<li><a href="/rates-bonds/u.s.-5-year-bond-yield">U.S. 5Y</a></li>
+<li><a href="/rates-bonds/u.s.-3-month-bond-yield">U.S. 3M</a></li>
+<li><a href="/rates-bonds/us-10-yr-t-note">US 10Y T-Note</a></li>
+<li><a href="/rates-bonds/us-30-yr-t-bond">US 30Y T-Bond</a></li>
+<li><a href="/rates-bonds/euro-bund">Euro Bund</a></li>
+</ul>
+<li class="navTitle">Real Time Charts</li>
+<li><a class=" " href="/charts/live-charts">Live Charts</a></li>
+<li><a class=" " href="/charts/forex-charts">Currency Chart</a></li>
+<li><a class=" " href="/charts/futures-charts">Futures Chart</a></li>
+<li><a class=" " href="/charts/stocks-charts">Stocks Chart</a></li>
+<li><a class=" " href="/charts/indices-charts">Indices Chart</a></li>
+<li><a class=" " href="/charts/cryptocurrency-charts">Cryptocurrency Chart</a></li> </ul>
+<ul class="popular" style="width: 220px">
+<li><a href="/charts/real-time-forex-charts">Interactive Currency Chart</a></li>
+<li><a href="/charts/real-time-futures-charts">Interactive Futures Chart</a></li>
+<li><a href="/charts/real-time-indices-charts">Interactive Indices Chart</a></li>
+<li><a href="/charts/real-time-stocks-charts">Interactive Stocks Chart</a></li>
+<li><a href="/charts/multiple-forex-streaming-charts">Multiple Currency Charts</a></li>
+<li><a href="/charts/multiple-indices-streaming-charts">Multiple Indices Charts</a></li>
+</ul>
