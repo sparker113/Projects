@@ -28,13 +28,6 @@ import com.aayushatharva.brotli4j.decoder.DirectDecompress;
 import data.Nasdaq;
 
 public class Main {
-	public static ExecutorService executor = Executors.newWorkStealingPool(3);
-	public static Semaphore waiting = new Semaphore(0);
-	public static boolean isWaiting = false;
-	public static boolean waitingOnData = true;
-	public static boolean reading = true;
-	public static boolean parsing = true;
-
 	public static void main(String... args) throws Exception {
 		Nasdaq nasdaq = Nasdaq.getAllStockData();
 		Map<String,Map<String,String>> map = nasdaq.getData();
