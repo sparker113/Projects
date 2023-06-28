@@ -29,7 +29,7 @@ public class PlotPanel<T> extends JPanel{
 		this.height=height;
 	}
 	public PlotPanel(){
-		
+
 	}
 	public void setAutoAdjustScales(Boolean autoAdjust) {
 		this.autoAdjust = autoAdjust;
@@ -40,9 +40,9 @@ public class PlotPanel<T> extends JPanel{
 		properties.put(convertedArray.size(), getDefaultProperties());
 		convertedArray.add(floatArray);
 	}
-	public void addDataArray(ArrayList<T> data,Integer color,Integer stroke) {
+	public void addDataArray(ArrayList<T> data,Colors color,Integer stroke) {
 		ArrayList<Float> floatArray = convertArray(data);
-		properties.put(convertedArray.size(), getPropertiesMap(color,stroke));
+		properties.put(convertedArray.size(), getPropertiesMap(color.getColor(),stroke));
 		convertedArray.add(floatArray);
 	}
 	public int getMaxY(ArrayList<Float> dataArray) {
@@ -211,13 +211,17 @@ public class PlotPanel<T> extends JPanel{
 			return Color.black;
 		}
 	}
-	public final static int BLACK = 1;
-	public final static int BLUE = 2;
-	public final static int RED = 3;
-	public final static int GREEN = 4;
-	public final static int YELLOW = 5;
-	public final static int ORANGE = 6;
-	public final static int PURPLE = 7;
+	public enum Colors{
+		BLACK(1),BLUE(2),RED(3),GREEN(4),YELLOW(5),ORANGE(6),PURPLE(7);
+		private int index;
+		Colors(int index){
+			this.index = index;
+		}
+		public int getColor(){
+			return this.index;
+		}
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 
