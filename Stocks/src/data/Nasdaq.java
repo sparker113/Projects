@@ -110,7 +110,7 @@ public class Nasdaq {
         Executors.newSingleThreadExecutor().execute(() -> {
             try {
                 parseDayResponse(new GZIPInputStream(inputStream), queue, syncControls);
-            } catch (IOException | InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 syncControls.reading = false;
                 syncControls.continueFromWait();
