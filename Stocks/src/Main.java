@@ -35,20 +35,30 @@ public class Main {
 
 	
 	public static void main(String... args) throws Exception {
-		File stockFile = getAnyStockFile();
+		File stockFile = getStockFile("ABCL");
 		System.out.println(stockFile.getAbsolutePath());
 		@SuppressWarnings("unchecked")
 		Map<LocalDate,Map<String,String>> map = (Map<LocalDate,Map<String,String>>)readObjFromFile(stockFile.getAbsolutePath());
-		ArrayList<Float> array = getNumericArrayFromMap(map,Nasdaq.Historic.CLOSE.getValue());
+		ArrayList<Float> array = getNumericArrayFromMap(map,Nasdaq.Historic.CLOSE.getValue(),true);
 		System.out.println(array);
-		PlotFrame plotFrame = new PlotFrame(Set.of(array),getFirstDate(map));
+		PlotFrame plotFrame = new PlotFrame(Set.of(array),getArrayOfSet(map.keySet(),true));
 		plotFrame.setBackground(Color.GRAY);
 	}
 	public static LocalDate getFirstDate(Map<LocalDate,?> map){
-		for(LocalDate date:map.keySet()){
-			return date;
-		}
-		return null;
+		Object[] localDates = map.keySet().toArray();
+		return (LocalDate)localDates[localDates.length-1];
+	}
+	public static <T> ArrayList<T> getArrayOfSet(Set<T> set,boolean reversed){
+		ArrayList<T> array = new ArrayList<>();
+		set.forEach(t->{
+			array.add(reversed?0:array.size(),t);
+		});
+		return array;
+	}
+	public final static String STOCK_FILE_EXT = ".map";
+	public static File getStockFile(String ticker){
+		File file = Paths.get(DATA_DIR,ticker,ticker+STOCK_FILE_EXT).toFile();
+		return file;
 	}
 	public static File getAnyStockFile() throws IOException{
 		File file = Paths.get(DATA_DIR).toFile();
@@ -76,14 +86,14 @@ public class Main {
 		}
 		return null;
 	}
-	public static <K,T> ArrayList<Float> getNumericArrayFromMap(Map<K,Map<T,String>> map,T key){
+	public static <K,T> ArrayList<Float> getNumericArrayFromMap(Map<K,Map<T,String>> map,T key,boolean reversed){
 		ArrayList<Float> array = new ArrayList<>();
 		map.entrySet().forEach(entry->{
 			if(!entry.getValue().containsKey(key)){
 				return;
 			}
 			String value = entry.getValue().get(key);
-			array.add(getNumericValue(value));
+			array.add(reversed?0:array.size(),getNumericValue(value));
 		});
 		return array;
 	}
