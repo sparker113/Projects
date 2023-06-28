@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JPanel;
 
@@ -14,15 +16,17 @@ public class AxisPanel extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final int WIDTH;
-	private final int HEIGHT;
-	private final int PADDING;
+	final int WIDTH;
+	final int HEIGHT;
+	final int PADDING;
 	private int tickLength = 10;
 	private int ticks = 5;
 	private int[] maxY= {10};
 	private int maxX= 10;
-	
-	
+	private boolean dateXAxis = false;
+	private LocalDate firstDate = LocalDate.now();
+	private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-dd");
+
 	public AxisPanel(int width,int height,int padding){
 		WIDTH = width;
 		HEIGHT = height;
@@ -32,6 +36,13 @@ public class AxisPanel extends JPanel{
 		WIDTH = width;
 		HEIGHT = height;
 		PADDING = 50;
+	}
+	public void setDateXAxis(LocalDate firstDate){
+		this.dateXAxis = true;
+		this.firstDate = firstDate;
+	}
+	public void setDateFormat(String pattern){
+		dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
 	}
 	public void setMaxX(int maxX) {
 		this.maxX = maxX;
@@ -129,7 +140,7 @@ public class AxisPanel extends JPanel{
 		for(int i=0;i<=ticks;i++) {
 			g2d.drawLine(getNthTick(i,xTickInterval,0),getXTickStart()
 					,getNthTick(i,xTickInterval,0),getXTickEnd());
-			String label = String.format(getLabelFormat(maxX),getLabel(i,xLabelInterval));
+			String label = dateXAxis?getDateLabel(i,xLabelInterval):String.format(getLabelFormat(maxX),getLabel(i,xLabelInterval));
 			drawLabel(g2d,label,getNthTick(i,xTickInterval,0)-3*label.length(),HEIGHT-(PADDING/2));
 		}
 	}
@@ -147,6 +158,11 @@ public class AxisPanel extends JPanel{
 	}
 	private Float getLabel(int index,Float interval) {
 		return index*interval;
+	}
+	private String getDateLabel(int index,Float interval){
+		Float xIndex = getLabel(index,interval);
+		LocalDate date = firstDate.plusDays(xIndex.longValue());
+		return date.format(dateTimeFormatter);
 	}
 	private int getNthTick(int index,int spacing,int sameTickIndex) {
 		return spacing*index+PADDING+(LABEL_PADDING+CHAR_HEIGHT)*sameTickIndex;

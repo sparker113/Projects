@@ -1,13 +1,17 @@
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -18,41 +22,123 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import com.aayushatharva.brotli4j.decoder.Decoder;
-import com.aayushatharva.brotli4j.decoder.DirectDecompress;
-
+import java.awt.Color;
 import data.Nasdaq;
+import graphpanel.PlotFrame;
 
 public class Main {
 
-
+	
 	public static void main(String... args) throws Exception {
-		Nasdaq nasdaq = Nasdaq.getAllStockData();
-		nasdaq.setHistoricData(10);
+		File stockFile = getAnyStockFile();
+		System.out.println(stockFile.getAbsolutePath());
+		@SuppressWarnings("unchecked")
+		Map<LocalDate,Map<String,String>> map = (Map<LocalDate,Map<String,String>>)readObjFromFile(stockFile.getAbsolutePath());
+		ArrayList<Float> array = getNumericArrayFromMap(map,Nasdaq.Historic.CLOSE.getValue());
+		System.out.println(array);
+		PlotFrame plotFrame = new PlotFrame(Set.of(array),getFirstDate(map));
+		plotFrame.setBackground(Color.GRAY);
 	}
-
-	public static String getStringBetweenChars(String string, char char1, char char2) {
-		int first = string.indexOf(char1);
-		int second = string.indexOf(char2, first);
-		return string.substring(first + 1, second);
-	}
-
-	public final static String RESPONSE_FILE_PATH = "response.txt";
-
-	private static void appendTextToFile(String text, String absFilePath) {
-		try (FileChannel fileChannel = getFileChannel(absFilePath)) {
-			ByteBuffer byteBuffer = ByteBuffer.wrap(text.getBytes());
-			fileChannel.write(byteBuffer);
-			fileChannel.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+	public static LocalDate getFirstDate(Map<LocalDate,?> map){
+		for(LocalDate date:map.keySet()){
+			return date;
 		}
-
+		return null;
+	}
+	public static File getAnyStockFile() throws IOException{
+		File file = Paths.get(DATA_DIR).toFile();
+		return getAnyStockFile(file);
+	}
+	public static File getAnyStockFile(File file){
+		if(file.isFile()){
+			return file;
+		}else if(file.listFiles().length==0){
+			return null;
+		}
+		File stockFile = checkListFiles(file.listFiles());
+		return stockFile;
+	}
+	public static File checkListFiles(File[] files){
+		if(files.length==0){
+			return null;
+		}
+		for(File file:files){
+			if(file.isFile()){
+				return file;
+			}else{
+				return checkListFiles(file.listFiles());
+			}
+		}
+		return null;
+	}
+	public static <K,T> ArrayList<Float> getNumericArrayFromMap(Map<K,Map<T,String>> map,T key){
+		ArrayList<Float> array = new ArrayList<>();
+		map.entrySet().forEach(entry->{
+			if(!entry.getValue().containsKey(key)){
+				return;
+			}
+			String value = entry.getValue().get(key);
+			array.add(getNumericValue(value));
+		});
+		return array;
+	}
+	public static Float getNumericValue(String string){
+		Matcher matcher = Pattern.compile("\\-?[0-9]+(\\.[0-9]+)?").matcher(string);
+		if(matcher.find()){
+			return Float.valueOf(matcher.group());
+		}
+		return 0f;
+	}
+	public static boolean isNumeric(String string){
+		Matcher matcher = Pattern.compile("[^0-9\\-\\.]").matcher(string);
+		return !matcher.find();
+	}
+	public static void seperateMapFile(Map<String,Map<LocalDate,Map<String,String>>> map){
+		makeDataDir(DATA_DIR);
+		map.forEach((String ticker,Map<LocalDate,Map<String,String>> dataMap) ->{
+			writeObjToFile(dataMap,getStockDataFilePath(ticker));
+		});
+	}
+	public static String getStockDataFilePath(String ticker){
+		Path path = Paths.get(DATA_DIR,ticker,ticker+".map");
+		File file = path.toFile();
+		if(!file.exists()){
+			file.getParentFile().mkdirs();
+		}
+		return path.toString();
+	}
+	public final static String DATA_DIR = "data";
+	public static void makeDataDir(String dirPath){
+		Path path = Paths.get(dirPath);
+		File file = path.toFile();
+		file.mkdirs();
 	}
 	public final static String HISTORIC_MAP_FILE = "historicMap.map";
+	public static <T> void writeObjToFile(T obj,String fileName){
+		try(ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(new File(fileName)))){
+			objectOutputStream.writeObject(obj);
+		}catch(IOException e){
+			e.printStackTrace();
+			return;
+		}
+		
+	}
+	
+	
+	public static Object readObjFromFile(String fileName){
+		try(ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(fileName))){
+			Object object = objectInputStream.readObject();
+			return object;
+		}catch(IOException | ClassNotFoundException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 	@SuppressWarnings("unchecked")
 	public static Map<String,Map<LocalDate,Map<String,String>>> readMapFromFile(String fileName) {
 		Map<String,Map<LocalDate,Map<String,String>>> map = null;
@@ -63,7 +149,26 @@ public class Main {
 		}
 		return map;
 	}
-	private static String getRuntimePath() {
+	public static String getStringBetweenChars(String string, char char1, char char2) {
+		int first = string.indexOf(char1);
+		int second = string.indexOf(char2, first);
+		return string.substring(first + 1, second);
+	}
+
+	public final static String RESPONSE_FILE_PATH = "response.txt";
+
+	public static void appendTextToFile(String text, String absFilePath) {
+		try (FileChannel fileChannel = getFileChannel(absFilePath)) {
+			ByteBuffer byteBuffer = ByteBuffer.wrap(text.getBytes());
+			fileChannel.write(byteBuffer);
+			fileChannel.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public static String getRuntimePath() {
 		Process process = null;
 		try {
 			process = Runtime.getRuntime().exec(new String[] { "cmd", "/c", "cd" });
@@ -76,7 +181,7 @@ public class Main {
 		while (scanner.hasNext()) {
 			runtimePath += scanner.next();
 		}
-
+        scanner.close();
 		return "file:/" + runtimePath.replace("\\", "/");
 	}
 
@@ -151,19 +256,7 @@ public class Main {
 		return array;
 	}
 
-	public static ZipInputStream decompressZip(InputStream inputStream) throws IOException {
-		return new ZipInputStream(inputStream);
-	}
 
-		public static void printStream(InputStream inputStream) throws IOException {
-		byte[] bytes = new byte[2048];
-		int i;
-		while ((i = inputStream.read(bytes)) > -1) {
-			DirectDecompress directDecompress = Decoder.decompress(bytes);
-
-			System.out.println(getStringFromBytes(directDecompress.getDecompressedData()));
-		}
-	}
 
 	public static String[] getHeadersString(Map<String, List<String>> headers) {
 		String[] strings = new String[headers.size() * 2];
