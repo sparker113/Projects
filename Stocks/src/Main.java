@@ -1,17 +1,13 @@
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -25,46 +21,38 @@ import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import com.aayushatharva.brotli4j.decoder.Decoder;
+import com.aayushatharva.brotli4j.decoder.DirectDecompress;
+
 import data.Nasdaq;
 
 public class Main {
 
 
 	public static void main(String... args) throws Exception {
-		Map<String,Map<LocalDate,Map<String,String>>> map = readMapFromFile(HISTORIC_MAP_FILE);
-		seperateMapFile(map);
-	}
-	public static void seperateMapFile(Map<String,Map<LocalDate,Map<String,String>>> map){
-		makeDataDir(DATA_DIR);
-		map.forEach((String ticker,Map<LocalDate,Map<String,String>> dataMap) ->{
-			writeObjToFile(dataMap,getStockDataFilePath(ticker));
-		});
-	}
-	public static String getStockDataFilePath(String ticker){
-		Path path = Paths.get(DATA_DIR,ticker,ticker+".map");
-		File file = path.toFile();
-		if(!file.exists()){
-			file.getParentFile().mkdirs();
-		}
-		return path.toString();
-	}
-	public final static String DATA_DIR = "data";
-	public static void makeDataDir(String dirPath){
-		Path path = Paths.get(dirPath);
-		File file = path.toFile();
-		file.mkdirs();
-	}
-	public final static String HISTORIC_MAP_FILE = "historicMap.map";
-	public static <T> void writeObjToFile(T obj,String fileName){
-		try(ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(new File(fileName)))){
-			objectOutputStream.writeObject(obj);
-		}catch(IOException e){
-			e.printStackTrace();
-			return;
-		}
-		
+		Nasdaq nasdaq = Nasdaq.getAllStockData();
+		nasdaq.setHistoricData(10);
 	}
 
+	public static String getStringBetweenChars(String string, char char1, char char2) {
+		int first = string.indexOf(char1);
+		int second = string.indexOf(char2, first);
+		return string.substring(first + 1, second);
+	}
+
+	public final static String RESPONSE_FILE_PATH = "response.txt";
+
+	private static void appendTextToFile(String text, String absFilePath) {
+		try (FileChannel fileChannel = getFileChannel(absFilePath)) {
+			ByteBuffer byteBuffer = ByteBuffer.wrap(text.getBytes());
+			fileChannel.write(byteBuffer);
+			fileChannel.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	public final static String HISTORIC_MAP_FILE = "historicMap.map";
 	@SuppressWarnings("unchecked")
 	public static Map<String,Map<LocalDate,Map<String,String>>> readMapFromFile(String fileName) {
 		Map<String,Map<LocalDate,Map<String,String>>> map = null;
@@ -75,26 +63,7 @@ public class Main {
 		}
 		return map;
 	}
-	public static String getStringBetweenChars(String string, char char1, char char2) {
-		int first = string.indexOf(char1);
-		int second = string.indexOf(char2, first);
-		return string.substring(first + 1, second);
-	}
-
-	public final static String RESPONSE_FILE_PATH = "response.txt";
-
-	public static void appendTextToFile(String text, String absFilePath) {
-		try (FileChannel fileChannel = getFileChannel(absFilePath)) {
-			ByteBuffer byteBuffer = ByteBuffer.wrap(text.getBytes());
-			fileChannel.write(byteBuffer);
-			fileChannel.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	public static String getRuntimePath() {
+	private static String getRuntimePath() {
 		Process process = null;
 		try {
 			process = Runtime.getRuntime().exec(new String[] { "cmd", "/c", "cd" });
@@ -107,7 +76,7 @@ public class Main {
 		while (scanner.hasNext()) {
 			runtimePath += scanner.next();
 		}
-        scanner.close();
+
 		return "file:/" + runtimePath.replace("\\", "/");
 	}
 
@@ -182,7 +151,19 @@ public class Main {
 		return array;
 	}
 
+	public static ZipInputStream decompressZip(InputStream inputStream) throws IOException {
+		return new ZipInputStream(inputStream);
+	}
 
+		public static void printStream(InputStream inputStream) throws IOException {
+		byte[] bytes = new byte[2048];
+		int i;
+		while ((i = inputStream.read(bytes)) > -1) {
+			DirectDecompress directDecompress = Decoder.decompress(bytes);
+
+			System.out.println(getStringFromBytes(directDecompress.getDecompressedData()));
+		}
+	}
 
 	public static String[] getHeadersString(Map<String, List<String>> headers) {
 		String[] strings = new String[headers.size() * 2];
