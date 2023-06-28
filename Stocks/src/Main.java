@@ -1,5 +1,10 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.URI;
@@ -16,24 +21,40 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import com.aayushatharva.brotli4j.decoder.Decoder;
-import com.aayushatharva.brotli4j.decoder.DirectDecompress;
 
 import data.Nasdaq;
 
 public class Main {
+
+
 	public static void main(String... args) throws Exception {
 		Nasdaq nasdaq = Nasdaq.getAllStockData();
-		Map<String,Map<String,String>> map = nasdaq.getData();
-		System.out.println(map);
+		nasdaq.setHistoricData(180);
+		writeObjToFile(nasdaq.getHistoricMap(),HISTORIC_MAP_FILE);
 	}
-
+	public final static String HISTORIC_MAP_FILE = "historicMap.map";
+	public static <T> void writeObjToFile(T obj,String fileName){
+		try(ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(new File(fileName)))){
+			objectOutputStream.writeObject(obj);
+		}catch(IOException e){
+			e.printStackTrace();
+			return;
+		}
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static Map<String,Map<LocalDate,Map<String,String>>> readMapFromFile(String fileName) {
+		Map<String,Map<LocalDate,Map<String,String>>> map = null;
+		try(ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(HISTORIC_MAP_FILE))){
+			map = (Map<String,Map<LocalDate,Map<String,String>>>)objectInputStream.readObject();
+		}catch(IOException | ClassNotFoundException e){
+			e.printStackTrace();
+		}
+		return map;
+	}
 	public static String getStringBetweenChars(String string, char char1, char char2) {
 		int first = string.indexOf(char1);
 		int second = string.indexOf(char2, first);
@@ -42,7 +63,7 @@ public class Main {
 
 	public final static String RESPONSE_FILE_PATH = "response.txt";
 
-	private static void appendTextToFile(String text, String absFilePath) {
+	public static void appendTextToFile(String text, String absFilePath) {
 		try (FileChannel fileChannel = getFileChannel(absFilePath)) {
 			ByteBuffer byteBuffer = ByteBuffer.wrap(text.getBytes());
 			fileChannel.write(byteBuffer);
@@ -53,7 +74,7 @@ public class Main {
 
 	}
 
-	private static String getRuntimePath() {
+	public static String getRuntimePath() {
 		Process process = null;
 		try {
 			process = Runtime.getRuntime().exec(new String[] { "cmd", "/c", "cd" });
@@ -66,7 +87,7 @@ public class Main {
 		while (scanner.hasNext()) {
 			runtimePath += scanner.next();
 		}
-
+        scanner.close();
 		return "file:/" + runtimePath.replace("\\", "/");
 	}
 
@@ -141,19 +162,7 @@ public class Main {
 		return array;
 	}
 
-	public static ZipInputStream decompressZip(InputStream inputStream) throws IOException {
-		return new ZipInputStream(inputStream);
-	}
 
-		public static void printStream(InputStream inputStream) throws IOException {
-		byte[] bytes = new byte[2048];
-		int i;
-		while ((i = inputStream.read(bytes)) > -1) {
-			DirectDecompress directDecompress = Decoder.decompress(bytes);
-
-			System.out.println(getStringFromBytes(directDecompress.getDecompressedData()));
-		}
-	}
 
 	public static String[] getHeadersString(Map<String, List<String>> headers) {
 		String[] strings = new String[headers.size() * 2];
