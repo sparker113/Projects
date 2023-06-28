@@ -11,6 +11,7 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -30,9 +31,28 @@ public class Main {
 
 
 	public static void main(String... args) throws Exception {
-		Nasdaq nasdaq = Nasdaq.getAllStockData();
-		nasdaq.setHistoricData(180);
-		writeObjToFile(nasdaq.getHistoricMap(),HISTORIC_MAP_FILE);
+		Map<String,Map<LocalDate,Map<String,String>>> map = readMapFromFile(HISTORIC_MAP_FILE);
+		seperateMapFile(map);
+	}
+	public static void seperateMapFile(Map<String,Map<LocalDate,Map<String,String>>> map){
+		makeDataDir(DATA_DIR);
+		map.forEach((String ticker,Map<LocalDate,Map<String,String>> dataMap) ->{
+			writeObjToFile(dataMap,getStockDataFilePath(ticker));
+		});
+	}
+	public static String getStockDataFilePath(String ticker){
+		Path path = Paths.get(DATA_DIR,ticker,ticker+".map");
+		File file = path.toFile();
+		if(!file.exists()){
+			file.getParentFile().mkdirs();
+		}
+		return path.toString();
+	}
+	public final static String DATA_DIR = "data";
+	public static void makeDataDir(String dirPath){
+		Path path = Paths.get(dirPath);
+		File file = path.toFile();
+		file.mkdirs();
 	}
 	public final static String HISTORIC_MAP_FILE = "historicMap.map";
 	public static <T> void writeObjToFile(T obj,String fileName){
@@ -44,7 +64,7 @@ public class Main {
 		}
 		
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static Map<String,Map<LocalDate,Map<String,String>>> readMapFromFile(String fileName) {
 		Map<String,Map<LocalDate,Map<String,String>>> map = null;
