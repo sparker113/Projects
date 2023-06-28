@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -24,7 +25,7 @@ public class AxisPanel extends JPanel{
 	private int[] maxY= {10};
 	private int maxX= 10;
 	private boolean dateXAxis = false;
-	private LocalDate firstDate = LocalDate.now();
+	private ArrayList<LocalDate> dates;
 	private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-dd");
 
 	public AxisPanel(int width,int height,int padding){
@@ -37,9 +38,9 @@ public class AxisPanel extends JPanel{
 		HEIGHT = height;
 		PADDING = 50;
 	}
-	public void setDateXAxis(LocalDate firstDate){
+	public void setDateXAxis(ArrayList<LocalDate> dates){
 		this.dateXAxis = true;
-		this.firstDate = firstDate;
+		this.dates = dates;
 	}
 	public void setDateFormat(String pattern){
 		dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
@@ -160,8 +161,8 @@ public class AxisPanel extends JPanel{
 		return index*interval;
 	}
 	private String getDateLabel(int index,Float interval){
-		Float xIndex = getLabel(index,interval);
-		LocalDate date = firstDate.plusDays(xIndex.longValue());
+		Float ind = getLabel(index,interval);
+		LocalDate date = dates.get(ind.intValue());
 		return date.format(dateTimeFormatter);
 	}
 	private int getNthTick(int index,int spacing,int sameTickIndex) {

@@ -26,16 +26,16 @@ public class PlotFrame extends JFrame{
         this.axisPanel = getAxisPanel(arrays);
         nittyGritty();
     }
-    private LocalDate firstDate;
-    public <T> PlotFrame(Set<ArrayList<T>> arrays,LocalDate firstDate){
-        this.firstDate = firstDate;
+    private ArrayList<LocalDate> dates;
+    public <T> PlotFrame(Set<ArrayList<T>> arrays,ArrayList<LocalDate> dates){
+        this.dates = dates;
         this.axisPanel = getAxisPanel(arrays);
         nittyGritty();
     }
     <T> AxisPanel getAxisPanel(Set<ArrayList<T>> arrays){
         AxisPanel axisPanel = new AxisPanel(DEFAULT_PLOT_WIDTH,DEFAULT_PLOT_HEIGHT);
-        if(firstDate!=null){
-            axisPanel.setDateXAxis(firstDate);
+        if(dates!=null){
+            axisPanel.setDateXAxis(dates);
         }
         PlotPanel<T> plotPanel = new PlotPanel<>(DEFAULT_PLOT_WIDTH,DEFAULT_PLOT_HEIGHT);
         for(ArrayList<T> array:arrays){
