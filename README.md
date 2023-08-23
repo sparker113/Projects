@@ -1,2 +1,2 @@
 # Projects
-Practice Projects
+Personal Practice Projects
