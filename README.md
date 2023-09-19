@@ -1,6 +1,6 @@
 # Projects
-Projects I've developed over the past couple of years.
-*Java
-*CPP
-*RaspberryPi Pico
-*CMake
+Projects I've developed over the past couple of years./n
+*Java/n
+*CPP/n
+*RaspberryPi Pico/n
+*CMake/n
