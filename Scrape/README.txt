@@ -1,4 +1,4 @@
-Frac Field Engineer Automation Program, transfers full stage analysis report to local workbooks in which the path is configurable.
+Frac Field Engineer Automation Program, transfers full stage analysis report to local workbooks in which the path is configurable. 
 
 Allows user to create "transfer templates" to customize data transfer to external entity workbooks; 
 
